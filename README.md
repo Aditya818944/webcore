@@ -70,15 +70,15 @@ Only classes with @Path are scanned
 Methods must also have @Path
 If no @Get/@Post → method supports both
 ## Example
-@Path("/student")
-@Get
-public class Student {
+    @Path("/student")
+    @Get
+    public class Student {
 
     @Path("/add-student")
     public String add() {
         return "Student is added";
     }
-}
+    }
 
 ## Request URL:
 
@@ -91,22 +91,22 @@ Key Points
 Server-side forwarding
 URL does NOT change
 Target method controls response
-Example
-@Path("/student")
-@Get
-public class Student {
-
-    @Path("/add-student")
-    @Forward("/student/send-sms")
-    public void add() {
-        // Add student logic
+## Example
+        @Path("/student")
+        @Get
+        public class Student {
+   
+       @Path("/add-student")
+       @Forward("/student/send-sms")
+       public void add() {
+           // Add student logic
+       }
+   
+       @Path("/send-sms")
+       public void sendSMS() {
+           // Send SMS logic
+       }
     }
-
-    @Path("/send-sms")
-    public void sendSMS() {
-        // Send SMS logic
-    }
-}
 5. @OnStartup
 
 Executes methods during server startup.
@@ -115,15 +115,15 @@ Rules
 Must return void
 Unique priority required
 Cannot use @Forward
-Example
-@Path("/student")
-public class Student {
-
-    @OnStartup(1)
-    public void init() {
-        // Initialization logic
+## Example
+    @Path("/student")
+    public class Student {
+ 
+     @OnStartup(1)
+     public void init() {
+         // Initialization logic
+     }
     }
-}
 6. Scope Injection
 Annotations:
 @InjectApplicationScope
@@ -146,19 +146,19 @@ Key must exist in scope
 
 Binds query parameters to method arguments.
 
-Example
-@Path("/student")
-@Get
-public class Student {
-
-    @Path("/add-student")
-    public String addStudent(
-        @RequestParameter("age") int age,
-        @RequestParameter("name") String name
-    ) {
-        return "Student added";
-    }
-}
+## Example
+     @Path("/student")
+     @Get
+     public class Student {
+     
+         @Path("/add-student")
+         public String addStudent(
+             @RequestParameter("age") int age,
+             @RequestParameter("name") String name
+         ) {
+             return "Student added";
+         }
+     }
 9. @InjectRequestParameter
 
 Injects request parameters into class fields.
@@ -174,37 +174,37 @@ Supports direct injection of:
 ApplicationScope
 SessionScope
 RequestScope
-Example
-@Path("/student")
-@Get
-public class Student {
-
-    @Path("/do-something")
-    public void doSomething(
-        ApplicationScope as,
-        SessionScope ss,
-        RequestScope rs,
-        @RequestParameter("age") int age
-    ) {
-        // logic
+## Example
+    @Path("/student")
+    @Get
+    public class Student {
+    
+        @Path("/do-something")
+        public void doSomething(
+            ApplicationScope as,
+            SessionScope ss,
+            RequestScope rs,
+            @RequestParameter("age") int age
+        ) {
+            // logic
+        }
     }
-}
 11. JSON Request Handling
 Rules
 Case	Behavior
 n = 0	JSON ignored
 n = 1	Treated as JSON object
 n > 1	Only one JSON object allowed
-Example
-@Path("/something")
-@Post
-public class Something {
-
-    @Path("/take-json-object")
-    public String takeJsonObject(Participant p) {
-        return "Received: " + p.getName();
+## Example
+    @Path("/something")
+    @Post
+    public class Something {
+    
+        @Path("/take-json-object")
+        public String takeJsonObject(Participant p) {
+            return "Received: " + p.getName();
+        }
     }
-}
 12. @SecuredAccess (Authentication System)
 
 Used to secure service classes.
@@ -215,9 +215,9 @@ Uses guard method for validation
 Throws exception if unauthorized
 
 ## Login Example
-@Path("/Login")
-@Get
-public class Login {
+    @Path("/Login")
+    @Get
+    public class Login {
 
     @Path("/login")
     public void login(
@@ -233,9 +233,9 @@ public class Login {
             ss.setAttribute("credentials","incorrect");
         }
     }
-}
+    }
 ## Security Guard
-public class SecurityGuard {
+     public class SecurityGuard {
 
     public void guard(SessionScope ss) throws ServiceException {
         String credentials = (String) ss.getAttribute("credentials");
