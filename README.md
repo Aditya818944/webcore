@@ -45,6 +45,8 @@ JSFILE_NAME	Name of generated JavaScript file (default: abcd.js)
 JavaScriptSender	URL pattern for JavaScript servlet (default: /get-java-script)
 *  Features
 *  Annotations
+
+
 1. @Path
 
 Defines the URL mapping for a class or method.
@@ -58,8 +60,10 @@ Handles HTTP GET requests.
 Can be applied on:
 Class → applies to all methods
 Method → applies to specific method
-3. @Post
 
+
+
+3. @Post
 Handles HTTP POST requests.
 
 Can be applied on:
@@ -83,8 +87,11 @@ If no @Get/@Post → method supports both
 ## Request URL:
 
 http://localhost:8080/app-name/testing/student/add-student
-4. @Forward
 
+
+
+
+4. @Forward
 Used for internal request forwarding.
 
 Key Points
@@ -107,8 +114,11 @@ Target method controls response
            // Send SMS logic
        }
     }
-5. @OnStartup
 
+
+
+    
+5. @OnStartup
 Executes methods during server startup.
 
 Rules
@@ -124,6 +134,10 @@ Cannot use @Forward
          // Initialization logic
      }
     }
+
+
+
+    
 6. Scope Injection
 Annotations:
 @InjectApplicationScope
@@ -134,7 +148,11 @@ Applied on class
 Requires:
 Private variables
 Setter methods
-7. @AutoWired
+
+
+
+
+8. @AutoWired
 
 Automatically injects objects from scopes.
 
@@ -142,6 +160,9 @@ Rules
 Applied on fields
 Setter method required
 Key must exist in scope
+
+
+
 8. @RequestParameter
 
 Binds query parameters to method arguments.
@@ -159,6 +180,9 @@ Binds query parameters to method arguments.
              return "Student added";
          }
      }
+
+
+     
 9. @InjectRequestParameter
 
 Injects request parameters into class fields.
@@ -167,6 +191,10 @@ Rules
 Applied on fields
 Setter required
 Injected before method execution
+
+
+
+
 10. Method Parameter Injection
 
 Supports direct injection of:
@@ -189,6 +217,10 @@ RequestScope
             // logic
         }
     }
+
+
+
+    
 11. JSON Request Handling
 Rules
 Case	Behavior
@@ -205,6 +237,10 @@ n > 1	Only one JSON object allowed
             return "Received: " + p.getName();
         }
     }
+
+
+
+    
 12. @SecuredAccess (Authentication System)
 
 Used to secure service classes.
