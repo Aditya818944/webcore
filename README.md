@@ -465,10 +465,14 @@ Key must exist in scope
             }
 
 
-## USAGE GUIDE 
+## USAGE GUIDE OF FRAMEWORK
  *  STEP 1 : First install tomcat9 and java 23.0.0
  *  STEP 2 : Download 'webcore-framework.jar'  and 'gson-2.11.0.jar' file and copy it in WEB-INF/lib/
  *  STEP 3 : Download 'web.xml' file and configure it as guided in documentation
  *  STEP 4 : Now start writing code in 'WEB-INF/classes' folder
  *  STEP 5 : For compiling code  use below command
       *  javac -cp "path to webcore-framework.jar and gson-2.11.0.jar"    file_name.java
+  
+## USAGE GUID OF DOCUMENTAION TOOL
+ * STEP 1 : Download 'webcore-framework.jar' and  
+ * STEP 2 : 
