@@ -76,17 +76,17 @@ Key Configuration that must be done in web.xml file of framework
     CASE 3 -Not on Class and Not on Method -> Method supports both GET and POST
        
    EXAMPLE :
-   import com.micro.web.services.webcore.annotations.*;
-   @Path("/student")
-   @Get
-   public class Student
-   {
-   @Path("/add-student")
-   public String add()
-   {
-     return "Student is added";
-   }
-   }
+       import com.micro.web.services.webcore.annotations.*;
+       @Path("/student")
+       @Get
+       public class Student
+       {
+       @Path("/add-student")
+       public String add()
+       {
+         return "Student is added";
+       }
+       }
 
   Request url : http://localhost:8080/app-name/testing/student/add-student
 
