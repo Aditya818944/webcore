@@ -34,46 +34,32 @@ Injects dependencies
 Executes services and returns responses
 
 
- # Configuration (web.xml)
+# Configuration (web.xml)
 
 The following parameters must be configured:
 
 Parameter	Description
-SERVICE_PACKAGE_PREFIX	Base package for scanning (defined by user)
-URL_CONTEXT	Routing prefix (default: /testing/*)
-JSFILE_NAME	Name of generated JavaScript file (default: abcd.js)
-JavaScriptSender	URL pattern for JavaScript servlet (default: /get-java-script)
-*  Features
-*  Annotations
+   * SERVICE_PACKAGE_PREFIX	Base package for scanning (defined by user)
+   * URL_CONTEXT	Routing prefix (default: /testing/*)
+   * JSFILE_NAME	Name of generated JavaScript file (default: abcd.js)
+   * JavaScriptSender	URL pattern for JavaScript servlet (default: /get-java-script)
 
-
-1. @Path
-
-Defines the URL mapping for a class or method.
-
-Can be applied on class and method
-Mandatory for scanning
-2. @Get
-
-Handles HTTP GET requests.
-
-Can be applied on:
-Class → applies to all methods
-Method → applies to specific method
-
-
-
-3. @Post
-Handles HTTP POST requests.
-
-Can be applied on:
-Class → applies to all methods
-Method → applies to specific method
-## Important Rules
-Only classes with @Path are scanned
-Methods must also have @Path
-If no @Get/@Post → method supports both
-## Example
+# Annotations Description 
+ ## 1 @Path Annotation
+   *  Defines the URL mapping for a class or method.
+   *  Can be applied on class and method Mandatory for scanning
+ ## 2 @Get Annotation
+   *  Handles HTTP GET requests.*
+   *   Can be applied on class or method
+ ## 3 @Post Annotation
+   *  Handles HTTP POST requests.
+   *  Can be applied on class or method 
+   
+ ### NOTE : 
+   * Only classes with @Path are scanned
+   * Methods must also have @Path
+   * If no @Get/@Post  the framework assume that particular service supports both type of request i.e. Get and Post
+ ## Example
     @Path("/student")
     @Get
     public class Student {
@@ -84,21 +70,19 @@ If no @Get/@Post → method supports both
     }
     }
 
-## Request URL:
-
-http://localhost:8080/app-name/testing/student/add-student
 
 
 
 
-4. @Forward
-Used for internal request forwarding.
+ ## 4 @Forward Annotation
+   * Applied on Method , Specifies the target service path to forward the request
+ ### NOTE : 
+   * Forwarding is server-side (internal)
+   * Browser URL does not change
+   * The original method (add()) does not return response
+   * The forwarded method controls the final response
 
-Key Points
-Server-side forwarding
-URL does NOT change
-Target method controls response
-## Example
+ ## Example
         @Path("/student")
         @Get
         public class Student {
@@ -117,15 +101,17 @@ Target method controls response
 
 
 
-    
-5. @OnStartup
-Executes methods during server startup.
-
-Rules
-Must return void
-Unique priority required
-Cannot use @Forward
-## Example
+ ## 5 @OnStartup Annotation
+   * Executes methods during server startup.
+   * Method must have void return type
+   * Each @Onstartup method must have a unique priority
+   * No two methods can share the same priority
+   * Priority determines execution order
+ ### NOTES : 
+   * @Forward cannot be used with @Onstartup
+   * Method should not depend on runtime request data
+     
+ ## Example
     @Path("/student")
     public class Student {
  
@@ -138,23 +124,87 @@ Cannot use @Forward
 
 
     
-6. Scope Injection
-Annotations:
-@InjectApplicationScope
-@InjectSessionScope
-@InjectRequestScope
-Rules
-Applied on class
-Requires:
-Private variables
-Setter methods
+ ## 6 Scope Injection (@InjectApplicationScope , @InjectSessioScope , @InjectRequestScope )
+   * Applied on class
+   * Requires: Private member variable and proper setter and getter methods with camel case notation
+
+ ### NOTES : 
+   * Must apply annotation on class
+   * Must define : Private variable , Setter method (mandatory) and Naming must follow camelCase convention
+     
+ ## EXAMPLE
+           @Get @Path("/candidate")
+    @InjectApplicationScope
+    @InjectSessionScope
+     @InjectRequestScope
+    public class Candidate
+    {
+     private ApplicationScope applicationScope;
+     private SessionScope sessionScope;
+    private RequestScope requestScope;
+    public void setApplicationScope(ApplicationScope applicationScope)
+    {
+    this.applicationScope = applicationScope;
+     }
+    public ApplicationScope getApplicationScope()
+    {
+     return this.applicationScope;
+     }
+    public void setSessionScope(SessionScope sessionScope)
+    {
+    this.sessionScope = sessionScope;
+    }
+     public SessionScope getSessionScope()
+     {
+     return this.sessionScope;
+    }
+     public void setRequestScope(RequestScope requestScope)
+    {
+     this.requestScope = requestScope;
+    }
+    public RequestScope getRequestScope()
+    {
+     return this.requestScope;
+    }
+     @Path("/add")
+    public void add()
+    {
+     sessionScope.setAttribute("AttributeThree","attribute-three-value");
+     System.out.println("Candidate detail is added");
+    }
+    }
 
 
 
+ ##  7 @AutoWired
+   * Automatically injects objects from scopes.
+   * Applied on class fields (properties)
+   * Requires: A corresponding setter method
+   * Accepts a key as parameter
+ ### NOTES 
+   * Setter method is mandatory
+   * Key must exist in at least one scope
+   * If key is not found → value will remain null (or can be handled by framework)
+   * 
+ ## EXAMPLE 
+             @Path("/bulb-vendor")
+             @Get
+             public class BulbVendor
+             {
+             @AutoWired("xyz")
+             private Bulb bulb;
+             public void setBulb(Bulb bulb)
+             {
+             this.bulb = bulb;
+             }
+             @Path("/get-bulb")
+             public String getBulb()
+             {
+             return "Bulb with wattage : " + bulb.getWattage();
+             }
+          }
 
-8. @AutoWired
 
-Automatically injects objects from scopes.
 
 Rules
 Applied on fields
@@ -162,71 +212,121 @@ Setter method required
 Key must exist in scope
 
 
-
-8. @RequestParameter
-
-Binds query parameters to method arguments.
-
-## Example
-     @Path("/student")
-     @Get
-     public class Student {
+ ## 8 @RequestParameter
+   * Applied on method parameters
+   * Accepts a key name corresponding to the request parameter
+ ### NOTES 
+   * Annotation must be applied to each parameter
+   * Parameter name must match key in request
+   * Framework performs type compatibility check
+   * If conversion fails → error should be handled (framework responsibility)
      
-         @Path("/add-student")
-         public String addStudent(
-             @RequestParameter("age") int age,
-             @RequestParameter("name") String name
-         ) {
-             return "Student added";
+ ## EXAMPLE 
+       @Path("/student")
+      @Get
+      public class Student
+      {
+      @Path("/add-student")
+      public String addStudent( @RequestParameter("age") int age, @RequestParameter("name") String name, @RequestParameter("roll_number") int rollNumber )
+      { // student adding code return "Student added";
+      }
+      }
+
+     
+ ##  9 @InjectRequestParameter
+   * Applied on class fields (properties)
+   * Requires:A corresponding setter method
+   * Accepts a key name from request parameters
+ ### NOTES 
+   * Setter method is mandatory
+   * Annotation must be applied on class field
+   * Key must match query parameter name
+   * Type conversion must be valid
+   * Injection happens before any service method execution
+
+ ## EXAMPLE 
+         @Path("/student")
+       @Get
+       public class Student
+       {
+       @InjectRequestParameter("school_code") private int schoolCode;
+       public void setSchoolCode(int schoolCode)
+       {
+       this.schoolCode = schoolCode;
+       }
+       public int getSchoolCode()
+       {
+       return this.schoolCode;
+       }
+       @Path("/add-student")
+       public void addStudent()
+       {
+        // use schoolCode
+       }
+       @Path("/delete-student")
+       public void deleteStudent()
+       {
+       // use schoolCode
+       }
+       }
+
+
+ 
+
+ 
+
+
+
+
+
+ ## 10  Method Parameter Injection
+   *  The following types can be directly used as method parameters:
+      * ApplicationScope
+      * SessionScope
+      * RequestScope
+ ### NOTES
+   * Scope injection works based on parameter type
+   * Request parameters require @RequestParameter
+   * Type conversion is handled by framework
+   * Injection happens automatically before method execution
+     
+## EXAMPLE 
+          @Path("/student")
+     @Get
+     public class Student
+     {
+         @Path("/do-something")
+         public void doSomething(
+             ApplicationScope as,
+             SessionScope ss,
+             RequestScope rs,
+             @RequestParameter("age") int age
+         )
+         {
+             // use scopes and age directly
          }
      }
 
 
-     
-9. @InjectRequestParameter
-
-Injects request parameters into class fields.
-
-Rules
-Applied on fields
-Setter required
-Injected before method execution
 
 
+ ##  11 JSON Request Handling
+   * The framework supports automatic conversion of JSON request body into Java objects for service methods.
+   * Let n = number of parameters in service method:
 
+       * CASE I : n=0 Method is invoked normally
+       * CASE II : n=1 Parameter is treated as JSON object , Framework converts JSON → Java object
+       * CASE III : n>1 Only one parameter can represent JSON object , Remaining parameters must be one of the following
+          * ApplicationScope
+          * SessionScope
+          * RequestScope
+ ### NOTES
+   * Only one JSON object parameter allowed
+   * JSON structure must match Java class
+   * Type compatibility must be maintained
+   * JSON parsing errors should be handled by framework
+   * Multiple custom objects are not allowed
 
-10. Method Parameter Injection
-
-Supports direct injection of:
-
-ApplicationScope
-SessionScope
-RequestScope
-## Example
-    @Path("/student")
-    @Get
-    public class Student {
-    
-        @Path("/do-something")
-        public void doSomething(
-            ApplicationScope as,
-            SessionScope ss,
-            RequestScope rs,
-            @RequestParameter("age") int age
-        ) {
-            // logic
-        }
-    }
-
-
-
-    
-11. JSON Request Handling
-Rules
-Case	Behavior
-n = 0	JSON ignored
-n = 1	Treated as JSON object
-n > 1	Only one JSON object allowed
 ## Example
     @Path("/something")
     @Post
@@ -241,47 +341,81 @@ n > 1	Only one JSON object allowed
 
 
     
-12. @SecuredAccess (Authentication System)
-
-Used to secure service classes.
-
-Rules
-Applied on class
-Uses guard method for validation
-Throws exception if unauthorized
-
-## Login Example
-    @Path("/Login")
-    @Get
-    public class Login {
-
-    @Path("/login")
-    public void login(
-        @RequestParameter("password") String password,
-        ApplicationScope as,
-        SessionScope ss
-    ) {
-        String stored = (String) as.getAttribute("password");
-
-        if(password.equals(stored)) {
-            ss.setAttribute("credentials","correct");
-        } else {
-            ss.setAttribute("credentials","incorrect");
+ ## 12 @SecuredAccess (Authentication Related Feature)
+   * The @SecuredAccess annotation is used to secure service classes by enforcing authentication checks before   executing any service method.
+   * Used to secure service classes.
+   * Applied on class
+   * Defines a security guard that validates access before method execution
+ ### NOTES
+   * Guard method must : 
+      * Accept required scopes (e.g., SessionScope)
+      * Throw exception on failure
+   * Guard class must be accessible via class path
+   * Authentication state must be maintained in scope (SessionScope recommended)
+     
+### EXAMPLE 
+  #### Secured class code
+                 @SecuredAccess(checkPost="bobby.web.application.working.directories.SecurityGuard",guard="guard")
+            @Path("/employee")
+            @InjectApplicationScope
+        public class Employee
+        {
+            private ApplicationScope as;
+        
+            public void setApplicationScope(ApplicationScope as)
+            {
+                this.as = as;
+            }
+        
+            @Onstartup(3)
+            public void setLoginCredentials()
+            {
+                as.setAttribute("password","adityasinghchouhan");
+            }
+        
+            @Path("/add")
+            public String add()
+            {
+                return "Employee added";
+            }
         }
-    }
-    }
-## Security Guard
-     public class SecurityGuard {
+        
+  #### Login service code 
+          @Path("/Login")
+          @Get
+          public class Login
+          {
+              @Path("/login")
+              public void login(
+                  @RequestParameter("password") String password,
+                  ApplicationScope as,
+                  SessionScope ss
+              )
+              {
+                  String asPassword = (String) as.getAttribute("password");
+          
+                  if(password.equals(asPassword)) {
+                      ss.setAttribute("credentials","correct");
+                  } else {
+                      ss.setAttribute("credentials","incorrect");
+                  }
+              }
+          }
 
-    public void guard(SessionScope ss) throws ServiceException {
-        String credentials = (String) ss.getAttribute("credentials");
+  ####  Security Guard code 
+                    public class SecurityGuard
+            {
+                public void guard(SessionScope ss) throws ServiceException
+                {
+                    String credentials = (String) ss.getAttribute("credentials");
+            
+                    if(credentials.equals("incorrect")) {
+                        throw new ServiceException("Incorrect credentials");
+                    }
+                }
+            }
 
-        if(credentials.equals("incorrect")) {
-            throw new ServiceException("Incorrect credentials");
-        }
-    }
-}
-#### Final Notes
-WebCore simplifies Servlet-based backend development
-Fully annotation-driven architecture
-Designed for learning + lightweight production use
+
+## USAGE GUIDE 
+ *  STEP 1 : 
+ 
