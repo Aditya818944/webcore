@@ -4,7 +4,7 @@ A lightweight, annotation-based Java backend framework built on Servlets, design
 
 #  Overview
 
-WebCore is a custom-built Java backend framework that abstracts low-level Servlet APIs and provides a clean, structured way to build web services using annotations.
+WebCore is a custom-built Java backend framework that abstracts low-level Servlet APIs and provides a clean, structured way to build web services using annotationss .
 
 #  Key Features
 Annotation-based routing
