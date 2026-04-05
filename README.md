@@ -53,14 +53,14 @@ Key Configuration that must be done in web.xml file of framework
      b) Mandatory for both class and method to be considered during scanning
    
   
-3) `@Get` Specifies that the service handles HTTP GET requests
+2) `@Get` Specifies that the service handles HTTP GET requests
    
     a) Can be applied on:
        * Class → applies to all methods
        * Method → applies only to that method
 
    
-4) `@Post` Specifies that the service handles HTTP POST requests
+3) `@Post` Specifies that the service handles HTTP POST requests
    
     a) Can be applied on:
        * Class → applies to all methods
@@ -91,7 +91,7 @@ Key Configuration that must be done in web.xml file of framework
   Request url : http://localhost:8080/app-name/testing/student/add-student
 
 
-  5) `@Forward` The @Forward annotation is used to forward a request from one service method to another service method within the framework.
+  4) `@Forward` The @Forward annotation is used to forward a request from one service method to another service method within the framework.
      
      a) Applied on Method , Specifies the target service path to forward the request
 
@@ -124,7 +124,7 @@ Key Configuration that must be done in web.xml file of framework
 Request url : http://localhost:8080/app-name/testing/student/add-student
 
 
-6) `@Onstartup` The @Onstartup annotation is used to execute specific methods automatically during server startup.
+5) `@Onstartup` The @Onstartup annotation is used to execute specific methods automatically during server startup.
 It is mainly used for initialization tasks such as loading data, preparing caches, or setting up required data structures.
 
    a) Applied on method
@@ -153,7 +153,7 @@ public void populateStudentRelatedDataStructure()
 Note : no url it is applied on startup method which is used to initializing purposes
 
 
-7) `@InjectApplicationScope` and `@InjectSessionScope` and `@InjectRequestScope`  These annotations allow automatic injection of scope objects into service classes.
+6) `@InjectApplicationScope` and `@InjectSessionScope` and `@InjectRequestScope`  These annotations allow automatic injection of scope objects into service classes.
 
    a) Applied on class
    b) Requires:Private member variable and Proper getter and setter methods
@@ -212,7 +212,7 @@ Note : no url it is applied on startup method which is used to initializing purp
 
 
 
-8) `@AutoWired()`  The @AutoWired annotation is used to automatically inject an object into a class property by searching for it across different scopes.
+7) `@AutoWired()`  The @AutoWired annotation is used to automatically inject an object into a class property by searching for it across different scopes.
 It eliminates the need for manually accessing Application, Session, or Request scopes.
 
    a) Applied on class fields (properties)
@@ -245,7 +245,7 @@ It eliminates the need for manually accessing Application, Session, or Request s
 
 
 
-   9) `@RequestParameter`  The @RequestParameter annotation is used to bind HTTP request parameters (query parameters) to method arguments.
+   8) `@RequestParameter`  The @RequestParameter annotation is used to bind HTTP request parameters (query parameters) to method arguments.
   
        a) Applied on method parameters
        b) Accepts a key name corresponding to the request parameter
@@ -270,7 +270,7 @@ It eliminates the need for manually accessing Application, Session, or Request s
 
 
 
-  10)  `@InjectRequestParameter` The @InjectRequestParameter annotation is used to inject HTTP request parameters (query parameters) directly into class-level
+  9)  `@InjectRequestParameter` The @InjectRequestParameter annotation is used to inject HTTP request parameters (query parameters) directly into class-level
       properties. It avoids passing the same parameter repeatedly to multiple methods.
 
         a) Applied on class fields (properties)
@@ -311,7 +311,7 @@ It eliminates the need for manually accessing Application, Session, or Request s
        }
 
 
-11) Method Parameter Injection : The framework allows automatic injection of scope objects and request parameters directly into method arguments.
+10) Method Parameter Injection : The framework allows automatic injection of scope objects and request parameters directly into method arguments.
 This eliminates the need for class-level injection or manual setup.
 
      a) The following types can be directly used as method parameters:
@@ -344,7 +344,7 @@ public class Student
 
 
 
-12) JSON Request Handling : The framework supports automatic conversion of JSON request body into Java objects for service methods.
+11) JSON Request Handling : The framework supports automatic conversion of JSON request body into Java objects for service methods.
 
     Parameter Rules
 
@@ -400,7 +400,7 @@ public class Student
 
 
 
-    13 @SecuredAccess (Authentication System ) : The @SecuredAccess annotation is used to secure service classes by enforcing authentication checks before                 executing any service method.
+12 @SecuredAccess (Authentication System ) : The @SecuredAccess annotation is used to secure service classes by enforcing authentication checks before                 executing any service method.
 
 
       a) Applied on class
