@@ -422,6 +422,6 @@ Key must exist in scope
  *  STEP 3 : Download 'web.xml' file and configure it as guided in documentation
  *  STEP 4 : Now start writing code in 'WEB-INF/classes' folder
  *  STEP 5 : For compiling code  use below command
-      *  javac -cp "path to webcore-framework.jar and gson-2.11.0.jar"  file_name.java
+      *  javac -cp "path to webcore-framework.jar and gson-2.11.0.jar"    file_name.java
    
  
