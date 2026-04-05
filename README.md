@@ -20,7 +20,7 @@ jQuery (for frontend requests)
 # Architecture
 
 The framework is based on two core servlets:
-
+ 
 1. WebCoreStartup
 Executes on server startup
 Scans all classes using SERVICE_PACKAGE_PREFIX
