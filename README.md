@@ -417,5 +417,7 @@ Key must exist in scope
 
 
 ## USAGE GUIDE 
- *  STEP 1 : 
+ *  STEP 1 : First install tomcat9 and java 23.0.0
+ *  STEP 2 : Download 'webcore-framework.jar' and file and copy it in WEB-INF/lib/
+ *  STEP 3 : C
  
