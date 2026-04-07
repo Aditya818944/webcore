@@ -477,7 +477,7 @@ Key must exist in scope
  * STEP 1 : Download 'webcore-api-tool.jar' and  
  * STEP 2 : Now to run tool write the below command : -
        * java -cp path_to_classes;path_to_webcore-api-tool.jar  com.api.doc.tool.API_DOC_TOOL path_to_classes_folder api_doc.pdf
- * STEP 3 : By running above command you get api_doc.pdf named pdf , which is documentation of all the classes
+ * STEP 3 : By running above command you will pdf file named api_cod.pdf , which is documentation of all the classes
 
   ### Example 
     * let us consider path_to_classes is "c:\tomcat9\WEB-INF\classes\myproject" and "webcore-api-tool.jar" path is c:\tomcat9\WEB-INF\lib\webcore-api-tool.jar
