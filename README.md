@@ -474,5 +474,8 @@ Key must exist in scope
       *  javac -cp "path to webcore-framework.jar and gson-2.11.0.jar"    file_name.java
   
 ## USAGE GUID OF DOCUMENTAION TOOL
- * STEP 1 : Download 'webcore-framework.jar' and  
- * STEP 2 : 
+ * STEP 1 : Download 'webcore-tool.jar' and  
+ * STEP 2 : Now to run tool write the below command : -
+       * java -cp path_to_classes;path_to_webcore-tool.jar  com.api.doc.tool.API_DOC_TOOL path_to_classes_folder api_doc.pdf
+ * STEP 3 : By running above command you get api_doc.pdf named pdf , which is documentation of all the classes
+       
