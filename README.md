@@ -1,6 +1,6 @@
 # WebCore Framework
 
-A lightweight, annotation-based Java backend framework built on Servlets, designed to simplify web service development with features like routing, dependency injection, scope management, security, and automatic documentation generation.
+A lightweight, annotation-based Java backend framework built on Servlets, designed to simplify web service development with features like routing, scope management, security, and automatic documentation generation.
 
 #  Overview
 
